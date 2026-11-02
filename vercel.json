@@ -6,6 +6,10 @@
   },
   "routes": [
     {
+      "src": "/admin/assets/(.*)",
+      "dest": "/admin/assets/$1"
+    },
+    {
       "src": "/(css|js|img|fonts|uploads)/(.*)",
       "dest": "/$1/$2"
     },

@@ -40,10 +40,11 @@ final class Database
             PDO::ATTR_EMULATE_PREPARES   => false,
         ];
 
-        // TiDB Cloud SSL Support
+        // TiDB Cloud / SSL enforcement
         if (!empty($sslCa)) {
             $opts[PDO::MYSQL_ATTR_SSL_CA] = $sslCa;
         } elseif ($host !== '127.0.0.1' && $host !== 'localhost') {
+            $opts[PDO::MYSQL_ATTR_SSL_CA] = true;
             $opts[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = false;
         }
 
@@ -63,40 +64,17 @@ final class Database
         } catch (PDOException $e) {
             error_log('DevFolio DB connection failed: ' . $e->getMessage());
             http_response_code(500);
-            exit('Database connection failed. Check credentials or server status.');
+            exit('Database connection failed: ' . $e->getMessage());
         }
 
-        foreach (['site_settings', 'admin_users'] as $t) {
-            if (self::$pdo->query("SHOW TABLES LIKE '$t'")->fetchColumn() === false) {
-                require_once __DIR__ . '/src/Installer.php';
-                try {
-                    Installer::run(self::$pdo);
-                } catch (Throwable $e) {
-                    error_log('DevFolio auto-install failed: ' . $e->getMessage());
-                    http_response_code(500);
-                    exit('Automatic database setup failed: ' . htmlspecialchars($e->getMessage()));
-                }
-                break;
-            }
-        }
         return self::$pdo;
     }
 
     private static function run(string $sql, array $params): PDOStatement
     {
-        for ($try = 0; ; $try++) {
-            try {
-                $st = self::pdo()->prepare($sql);
-                $st->execute($params);
-                return $st;
-            } catch (PDOException $e) {
-                if ($try > 0 || (int) ($e->errorInfo[1] ?? 0) !== 1146) {
-                    throw $e;
-                }
-                require_once __DIR__ . '/src/Installer.php';
-                Installer::run(self::pdo());
-            }
-        }
+        $st = self::pdo()->prepare($sql);
+        $st->execute($params);
+        return $st;
     }
 
     public static function fetchAll(string $sql, array $params = []): array

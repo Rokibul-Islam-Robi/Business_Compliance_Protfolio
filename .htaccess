@@ -1,0 +1,10 @@
+# Apache only (ignored by PHP's built-in server). Blocks direct web access to internals.
+Options -Indexes
+<FilesMatch "^(db\.php|database\.sql|README\.md)$">
+  Require all denied
+</FilesMatch>
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^(src|includes)/ - [F,L]
+  RewriteRule ^admin/partials/ - [F,L]
+</IfModule>

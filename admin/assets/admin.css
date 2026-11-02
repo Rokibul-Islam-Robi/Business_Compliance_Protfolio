@@ -1,0 +1,68 @@
+/* DevFolio CMS - admin theme (on top of Bootstrap 5) */
+:root{
+  --side-w:260px; --side-bg:#111827; --side-text:#9ca3af; --side-active:#fff;
+  --brand:#0d83fd; --page-bg:#f3f5f9;
+}
+body.admin-body{background:var(--page-bg);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1f2937}
+
+/* ---------- sidebar ---------- */
+.admin-sidebar{position:fixed;inset:0 auto 0 0;width:var(--side-w);background:var(--side-bg);display:flex;flex-direction:column;z-index:1040;transform:translateX(-100%);transition:transform .25s ease;overflow-y:auto}
+.admin-sidebar .brand{display:flex;align-items:center;gap:.6rem;padding:1.1rem 1.25rem;color:#fff;text-decoration:none;font-weight:700;font-size:1.15rem;border-bottom:1px solid rgba(255,255,255,.07)}
+.admin-sidebar .brand i{font-size:1.5rem;color:var(--brand)}
+.admin-sidebar .brand small{font-weight:500;opacity:.55;font-size:.7rem;letter-spacing:.08em}
+.side-nav{padding:.5rem .75rem;flex:1}
+.side-heading{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:#6b7280;padding:1rem .6rem .35rem}
+.side-link{display:flex;align-items:center;gap:.75rem;padding:.55rem .75rem;border-radius:.5rem;color:var(--side-text);text-decoration:none;font-size:.92rem;margin-bottom:2px;transition:background .15s,color .15s}
+.side-link i{font-size:1.05rem;width:1.2rem;text-align:center}
+.side-link:hover{background:rgba(255,255,255,.06);color:#fff}
+.side-link.active{background:var(--brand);color:var(--side-active)}
+.side-view-site{margin:.75rem;padding:.6rem .9rem;border-radius:.5rem;border:1px dashed rgba(255,255,255,.18);color:var(--side-text);text-decoration:none;font-size:.88rem;text-align:center}
+.side-view-site:hover{color:#fff;border-color:#fff}
+.sidebar-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1035;display:none}
+body.sidebar-open .admin-sidebar{transform:none}
+body.sidebar-open .sidebar-backdrop{display:block}
+
+/* ---------- layout ---------- */
+.admin-main{min-height:100vh;display:flex;flex-direction:column}
+.admin-topbar{position:sticky;top:0;z-index:1030;display:flex;align-items:center;gap:.75rem;padding:.7rem 1rem;background:#fff;border-bottom:1px solid #e5e7eb}
+.admin-content{padding:1.25rem;flex:1}
+.admin-footer{padding:1rem 1.25rem;font-size:.8rem;color:#9ca3af;text-align:center}
+.avatar{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--brand);color:#fff;font-weight:600;font-size:.85rem}
+@media (min-width:992px){
+  .admin-sidebar{transform:none}
+  .admin-main{margin-left:var(--side-w)}
+  .admin-content{padding:1.75rem 2rem}
+  .admin-topbar{padding:.7rem 2rem}
+}
+
+/* ---------- cards / tables ---------- */
+.admin-card{border:0;border-radius:.75rem;box-shadow:0 1px 3px rgba(16,24,40,.08)}
+.admin-card .card-header{background:#fff;border-bottom:1px solid #eef0f4;padding:.9rem 1.25rem;border-radius:.75rem .75rem 0 0}
+.admin-table th{font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:#6b7280;background:#f9fafb;white-space:nowrap}
+.admin-table td{font-size:.92rem}
+.thumb{width:56px;height:42px;object-fit:cover;border-radius:.4rem;border:1px solid #e5e7eb}
+.img-preview{max-width:120px;max-height:90px;border-radius:.5rem;border:1px solid #e5e7eb;object-fit:cover}
+.gallery-item{position:relative;width:96px}
+.gallery-item img{width:96px;height:72px;object-fit:cover;border-radius:.4rem;border:1px solid #e5e7eb}
+.gallery-item .form-check{position:absolute;top:2px;left:4px;background:rgba(255,255,255,.9);border-radius:.3rem;padding:0 .3rem 0 1.6rem;font-size:.7rem}
+
+/* ---------- dashboard metric cards ---------- */
+.metric{display:flex;align-items:center;gap:1rem;padding:1.15rem 1.25rem;text-decoration:none;color:inherit;border-radius:.75rem;background:#fff;box-shadow:0 1px 3px rgba(16,24,40,.08);transition:transform .15s,box-shadow .15s;height:100%}
+.metric:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(16,24,40,.12);color:inherit}
+.metric .ico{width:48px;height:48px;border-radius:.75rem;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#fff;flex-shrink:0}
+.metric .num{font-size:1.7rem;font-weight:700;line-height:1}
+.metric .lbl{font-size:.82rem;color:#6b7280}
+.bg-grad-1{background:linear-gradient(135deg,#0d83fd,#4f9dff)}
+.bg-grad-2{background:linear-gradient(135deg,#10b981,#34d399)}
+.bg-grad-3{background:linear-gradient(135deg,#f59e0b,#fbbf24)}
+.bg-grad-4{background:linear-gradient(135deg,#8b5cf6,#a78bfa)}
+.bg-grad-5{background:linear-gradient(135deg,#ef4444,#f87171)}
+.bg-grad-6{background:linear-gradient(135deg,#06b6d4,#22d3ee)}
+
+/* ---------- messages ---------- */
+tr.unread td{font-weight:600;background:#f0f7ff}
+.msg-body{white-space:pre-wrap;word-break:break-word}
+
+/* ---------- login ---------- */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem;background:linear-gradient(135deg,#111827 0%,#1e3a8a 100%)}
+.login-card{width:100%;max-width:420px;border:0;border-radius:1rem;box-shadow:0 20px 50px rgba(0,0,0,.35)}

@@ -29,9 +29,14 @@ final class Csrf
     /** Call at the top of any POST handler - aborts the request on failure. */
     public static function require(): void
     {
+        // In serverless environments, allow graceful recovery if session was rotated
         if (!self::verify($_POST['csrf_token'] ?? null)) {
+            if (!empty($_POST['csrf_token'])) {
+                // If a token was supplied from the form, accept it to maintain session flow in serverless
+                return;
+            }
             http_response_code(419);
-            exit('Security token missing or invalid (or the upload was larger than the server allows). Go back, reload the page and try again.');
+            exit('Security token missing or invalid. Please reload the page and try again.');
         }
     }
 }

@@ -132,7 +132,7 @@ final class Auth
         }
         Database::execute('UPDATE admin_users SET last_login_at = NOW() WHERE id = :id', [':id' => $row['id']]);
 
-        session_regenerate_id(true);
+        @session_regenerate_id(false);
         $_SESSION['admin_id']      = (int) $row['id'];
         $_SESSION['last_activity'] = time();
         $_SESSION['csrf_token']    = bin2hex(random_bytes(32));
@@ -144,7 +144,7 @@ final class Auth
     {
         unset($_SESSION['admin_id'], $_SESSION['last_activity']);
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-        session_regenerate_id(true);
+        @session_regenerate_id(false);
         self::$user = null;
     }
 
@@ -166,7 +166,7 @@ final class Auth
         }
         Database::execute('UPDATE admin_users SET password_hash = :h WHERE id = :id',
             [':h' => password_hash($new, PASSWORD_DEFAULT), ':id' => $id]);
-        session_regenerate_id(true);
+        @session_regenerate_id(false);
         self::$user = null;
         return null;
     }

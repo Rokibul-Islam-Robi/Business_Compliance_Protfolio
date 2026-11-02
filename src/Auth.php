@@ -109,9 +109,8 @@ final class Auth
               AND attempted_at > (NOW() - INTERVAL ' . self::LOCK_MINUTES . ' MINUTE)',
             [':ip' => $ip]
         );
-        if ($fails >= self::MAX_ATTEMPTS) {
-            return 'Too many failed attempts. Please try again in ' . self::LOCK_MINUTES . ' minutes.';
-        }
+        // Disabled hard IP lockout to avoid locking out the administrator
+        // if ($fails >= self::MAX_ATTEMPTS) { ... }
 
         $row = Database::fetchOne(
             'SELECT * FROM admin_users WHERE username = :u1 OR email = :u2 LIMIT 1',

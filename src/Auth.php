@@ -96,7 +96,11 @@ final class Auth
     public static function attempt(string $login, string $password): ?string
     {
         self::ensureDefaultAdmin();
-        $ip = substr((string) ($_SERVER['REMOTE_ADDR'] ?? ''), 0, 45);
+        $ip = trim((string) ($_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1'));
+        if (str_contains($ip, ',')) {
+            $ip = trim(explode(',', $ip)[0]);
+        }
+        $ip = substr($ip, 0, 45);
 
         // Housekeeping + brute-force lockout
         Database::execute('DELETE FROM login_attempts WHERE attempted_at < (NOW() - INTERVAL 1 DAY)');

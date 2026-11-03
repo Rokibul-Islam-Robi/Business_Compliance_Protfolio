@@ -6,6 +6,8 @@
 require_once __DIR__ . '/includes/functions.php';
 
 // Contact form CSRF token (validated in forms/contact.php)
+require_once __DIR__ . '/src/PdoSessionHandler.php';
+PdoSessionHandler::register();
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }

@@ -10,8 +10,12 @@
       "dest": "/admin/assets/$1"
     },
     {
-      "src": "/(css|js|img|fonts|uploads)/(.*)",
+      "src": "/(css|js|img|fonts)/(.*)",
       "dest": "/$1/$2"
+    },
+    {
+      "src": "/uploads/(.*)",
+      "dest": "/api/index.php"
     },
     {
       "src": "/(.*)",

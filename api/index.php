@@ -7,6 +7,33 @@ $uri = trim($uri, '/');
 // Base directory is the project root (one level above api/)
 $baseDir = dirname(__DIR__);
 
+// Handle dynamic uploaded file serving from TiDB / MySQL Database
+if (str_starts_with($uri, 'uploads/')) {
+    $diskFile = $baseDir . '/' . $uri;
+    if (is_file($diskFile)) {
+        $mime = mime_content_type($diskFile) ?: 'image/jpeg';
+        header('Content-Type: ' . $mime);
+        header('Cache-Control: public, max-age=31536000');
+        readfile($diskFile);
+        exit;
+    }
+
+    // Fallback: check Database for serverless persistence
+    try {
+        require_once $baseDir . '/db.php';
+        $row = Database::fetchOne('SELECT mime_type, data FROM uploaded_files WHERE path = :p', [':p' => $uri]);
+        if ($row && !empty($row['data'])) {
+            header('Content-Type: ' . ($row['mime_type'] ?: 'image/jpeg'));
+            header('Cache-Control: public, max-age=31536000');
+            echo $row['data'];
+            exit;
+        }
+    } catch (Throwable $e) {}
+
+    http_response_code(404);
+    exit('Image not found.');
+}
+
 // Handle admin routes
 if (str_starts_with($uri, 'admin')) {
     $target = $baseDir . '/' . $uri;

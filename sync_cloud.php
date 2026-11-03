@@ -16,22 +16,28 @@ try {
     }
     $sql = file_get_contents($sqlFile);
     
-    // Execute SQL script
+    // Disable foreign key checks before dropping and recreating tables
+    $pdo->exec('SET FOREIGN_KEY_CHECKS = 0');
+    
     require_once __DIR__ . '/src/Installer.php';
     
-    // Drop existing content tables first so fresh data is written
-    $tables = ['site_settings', 'resume_items', 'services', 'pricing_plans', 'faqs', 'skills', 'stats', 'testimonials', 'portfolio_items', 'portfolio_images', 'portfolio_categories', 'social_links'];
+    $tables = [
+        'portfolio_images', 'portfolio_items', 'portfolio_categories',
+        'testimonials', 'pricing_plans', 'faqs', 'services', 'resume_items',
+        'skills', 'social_links', 'site_settings'
+    ];
     foreach ($tables as $t) {
         $pdo->exec("DROP TABLE IF EXISTS `$t`");
     }
     
-    // Split and execute statements
     foreach (Installer::split($sql) as $stmt) {
         if (preg_match('/^(DROP\s|USE\s|CREATE\s+DATABASE\s)/i', $stmt)) {
             continue;
         }
         $pdo->exec($stmt);
     }
+    
+    $pdo->exec('SET FOREIGN_KEY_CHECKS = 1');
     
     echo "<h1>SUCCESS: Cloud Database (TiDB / Vercel) updated successfully with all your data!</h1>";
 } catch (Throwable $e) {

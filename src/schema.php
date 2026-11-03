@@ -361,7 +361,7 @@ CREATE TABLE `site_settings` (
 
 LOCK TABLES `site_settings` WRITE;
 /*!40000 ALTER TABLE `site_settings` DISABLE KEYS */;
-INSERT INTO `site_settings` VALUES ('about_email','contact@example.com'),('about_heading','About me'),('about_image','img/mahfuzur_rahman.jpg'),('about_name','S M MAHFUZUR RAHMAN'),('about_phone','+880 1745 954670'),('about_profile','Senior Business Compliance & Tax Consultant'),('about_text','I am a dedicated Business Compliance Expert in Bangladesh with extensive experience in navigating the complexities of NBR tax laws, VAT structures, and corporate legalities. My expertise lies in helping individuals, startups, and established companies maintain 100% legal compliance while optimizing their financial workflows.\n\nFrom company registration at RJSC and trade license processing to annual income tax filing and monthly VAT returns, I provide end-to-end consultancy. My goal is to streamline your business operations so you can focus on growth while staying fully compliant with Bangladeshi regulations.\n\nWhether you need strategic tax planning, corporate audit defense, or financial documentation, I deliver accurate advice, reliable execution, and timely support tailored to your business needs.'),('contact_address','A108 Adam Street, New York, NY 535022'),('contact_email','info@example.com'),('contact_phone','+880 1745 954670'),('contact_subtitle','Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit'),('contact_title','Contact'),('faq_intro','Find answers to frequently asked questions about our tax, VAT, company registration, and business compliance services in Bangladesh.'),('hero_cta_text',''),('hero_cta_url','#contact'),('hero_image','img/hero-img.jpg'),('hero_subtitle',''),('hero_title','I am S M MAHFUZUR RAHMAN'),('hero_typed_items','Senior Business Compliance & Tax Consultant, NBR Tax & VAT Expert, RJSC Company Formation Specialist'),('meta_description',''),('meta_keywords',''),('page_banner_image','img/hero-img.jpg'),('portfolio_subtitle','Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit'),('portfolio_title','Portfolio'),('pricing_subtitle','Affordable and transparent pricing packages for your tax, VAT, and business compliance needs in Bangladesh'),('pricing_title','Pricing'),('resume_education_heading','Education'),('resume_experience_heading','Professional Experience'),('resume_subtitle','Professional background, qualifications, and extensive experience in corporate compliance'),('resume_summary_heading','Sumary'),('resume_title','Resume'),('services_subtitle','Professional solutions, accurate advice, and timely support for all your business compliance needs in Bangladesh'),('services_title','Services'),('site_logo','img/business_compliance_logo.jpg'),('site_name','Business Compliance'),('stats_image','img/stats-bg.jpg'),('testimonials_bg','img/testimonials-bg.jpg');
+INSERT INTO `site_settings` VALUES ('about_email','contact@example.com'),('about_heading','About me'),('about_image','img/mahfuzur_rahman.jpg'),('about_name','S M MAHFUZUR RAHMAN'),('about_phone','+880 1745 954670'),('about_profile','Senior Business Compliance & Tax Consultant'),('about_text','I am a dedicated Business Compliance Expert in Bangladesh with extensive experience in navigating the complexities of NBR tax laws, VAT structures, and corporate legalities. My expertise lies in helping individuals, startups, and established companies maintain 100% legal compliance while optimizing their financial workflows.\n\nFrom company registration at RJSC and trade license processing to annual income tax filing and monthly VAT returns, I provide end-to-end consultancy. My goal is to streamline your business operations so you can focus on growth while staying fully compliant with Bangladeshi regulations.\n\nWhether you need strategic tax planning, corporate audit defense, or financial documentation, I deliver accurate advice, reliable execution, and timely support tailored to your business needs.'),('contact_address','A108 Adam Street, New York, NY 535022'),('contact_email','info@example.com'),('contact_phone','+880 1745 954670'),('contact_subtitle','Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit'),('contact_title','Contact'),('faq_intro','Find answers to frequently asked questions about our tax, VAT, company registration, and business compliance services in Bangladesh.'),('hero_cta_text',''),('hero_cta_url','#contact'),('hero_image','img/hero-img.jpg'),('hero_subtitle',''),('hero_title','I am S M MAHFUZUR RAHMAN'),('hero_typed_items','Senior Business Compliance & Tax Consultant, NBR Tax & VAT Expert, RJSC Company Formation Specialist'),('meta_description',''),('meta_keywords',''),('page_banner_image','img/hero-img.jpg'),('portfolio_subtitle','Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit'),('portfolio_title','Portfolio'),('pricing_subtitle','Affordable and transparent pricing packages for your tax, VAT, and business compliance needs in Bangladesh'),('pricing_title','Pricing'),('resume_education_heading','Education'),('resume_experience_heading','Professional Experience'),('resume_subtitle','Professional background, qualifications, and extensive experience in corporate compliance'),('resume_summary_heading','Sumary'),('resume_title','Resume'),('services_subtitle','Professional solutions, accurate advice, and timely support for all your business compliance needs in Bangladesh'),('services_title','Services'),('site_logo','img/business_compliance_logo.png'),('site_name','Business Compliance'),('stats_image','img/stats-bg.jpg'),('testimonials_bg','img/testimonials-bg.jpg');
 /*!40000 ALTER TABLE `site_settings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -475,6 +475,31 @@ LOCK TABLES `testimonials` WRITE;
 INSERT INTO `testimonials` VALUES (1,'Saul Goodman','Ceo & Founder','img/testimonials-1.jpg',5,'Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.',1,1),(2,'Sara Wilsson','Designer','img/testimonials-2.jpg',5,'Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.',2,1),(3,'Jena Karlis','Store Owner','img/testimonials-3.jpg',5,'Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.',3,1),(4,'Matt Brandon','Freelancer','img/testimonials-4.jpg',5,'Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.',4,1),(5,'John Larson','Entrepreneur','img/testimonials-5.jpg',5,'Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.',5,1);
 /*!40000 ALTER TABLE `testimonials` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `uploaded_files`
+--
+
+DROP TABLE IF EXISTS `uploaded_files`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `uploaded_files` (
+  `path` varchar(255) NOT NULL,
+  `mime_type` varchar(64) NOT NULL,
+  `data` longblob NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`path`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `uploaded_files`
+--
+
+LOCK TABLES `uploaded_files` WRITE;
+/*!40000 ALTER TABLE `uploaded_files` DISABLE KEYS */;
+/*!40000 ALTER TABLE `uploaded_files` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -485,7 +510,7 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-11-03 11:15:45
+-- Dump completed on 2026-11-03 17:18:26
 
 SQLDATA;
 

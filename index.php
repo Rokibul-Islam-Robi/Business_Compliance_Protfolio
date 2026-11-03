@@ -35,7 +35,10 @@ require __DIR__ . '/includes/header.php';
     <!-- Hero Section -->
     <section id="hero" class="hero section dark-background">
 
-      <img src="<?= e(setting('hero_image', 'img/hero-img.jpg')) ?>" class="hero-bg-img" alt="" data-aos="fade-in">
+      <picture>
+        <source media="(max-width: 768px)" srcset="img/hero-img-mobile.jpg">
+        <img src="<?= e(setting('hero_image', 'img/hero-img.jpg')) ?>" class="hero-bg-img" alt="" data-aos="fade-in">
+      </picture>
 
       <div class="container d-flex flex-column align-items-center justify-content-center text-center hero-content" data-aos="fade-up" data-aos-delay="100">
         <h2><?= e(setting('hero_title')) ?></h2>

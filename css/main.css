@@ -1891,9 +1891,18 @@ section,
     min-height: 85vh;
     padding: 90px 15px 50px;
   }
+  .hero picture,
   .hero .hero-bg-img,
   .hero img {
-    object-position: center top !important;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover !important;
+    object-position: 70% top !important; /* Center the person's face/body on mobile */
+  }
+  .hero:before {
+    background: color-mix(in srgb, var(--background-color), transparent 45%); /* ensure text is legible while face is clearly visible */
   }
   .hero h2 {
     font-size: 28px !important;

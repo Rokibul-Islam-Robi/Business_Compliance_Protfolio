@@ -65,7 +65,7 @@ $navLinkActive = static function (string $url) use ($currentScript): bool {
   <link href="css/swiper-bundle.min.css" rel="stylesheet">
 
   <!-- Main CSS File -->
-  <link href="css/main.css?v=3.2" rel="stylesheet">
+  <link href="css/main.css?v=3.3" rel="stylesheet">
 
   <!-- =======================================================
   * Template Name: DevFolio

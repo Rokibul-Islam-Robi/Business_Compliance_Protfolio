@@ -8,9 +8,6 @@ $siteName = setting('site_name', 'DevFolio');
   <footer id="footer" class="footer accent-background">
 
     <div class="container">
-      <div class="copyright text-center ">
-        <p>© <?= date('Y') ?> <span>Copyright</span> <strong class="px-1 sitename">Cognovait</strong>. <span>All Rights Reserved</span></p>
-      </div>
       <div class="social-links d-flex justify-content-center">
         <?php foreach (get_social_links() as $s): ?>
         <a href="<?= e(safe_url($s['url'])) ?>"><i class="bi <?= e($s['icon']) ?>"></i></a>

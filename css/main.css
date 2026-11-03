@@ -2103,3 +2103,57 @@ section,
   }
 }
 
+/* 10. Logo & Company Name with Tagline Gap */
+.logo-text-group {
+  line-height: 1.2;
+}
+
+.company-main-title {
+  font-family: var(--heading-font);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: var(--heading-color);
+  text-transform: uppercase;
+}
+
+.dark-background .company-main-title,
+.header .company-main-title {
+  color: #ffffff;
+}
+
+.company-tagline {
+  font-family: var(--default-font);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2.2px;
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 5px; /* Clear visible gap between Business Compliance and Tax & Vat Expertise */
+  display: block;
+  text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .company-main-title {
+    font-size: 17px;
+    letter-spacing: 0.8px;
+  }
+  .company-tagline {
+    font-size: 9.5px;
+    letter-spacing: 1.4px;
+    margin-top: 4px;
+  }
+}
+
+@media (max-width: 420px) {
+  .company-main-title {
+    font-size: 15px;
+  }
+  .company-tagline {
+    font-size: 8.5px;
+    letter-spacing: 1px;
+    margin-top: 3px;
+  }
+}
+
+

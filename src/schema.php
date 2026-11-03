@@ -1,444 +1,491 @@
 <?php
-/** Embedded copy of database.sql used by Installer (auto-generated). */
 return <<<'SQLDATA'
--- ============================================================================
--- DevFolio PHP - database schema + sample data
--- Import:  mysql -u root -p < database.sql      (or phpMyAdmin -> Import)
--- Requires MySQL 5.7+ / MariaDB 10.3+ (utf8mb4)
--- ============================================================================
+-- MySQL dump 10.13  Distrib 8.0.37, for Win64 (x86_64)
+--
+-- Host: localhost    Database: devfolio
+-- ------------------------------------------------------
+-- Server version	5.5.5-10.4.32-MariaDB
 
-CREATE DATABASE IF NOT EXISTS `devfolio` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `devfolio`;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-SET FOREIGN_KEY_CHECKS = 0;
-DROP TABLE IF EXISTS login_attempts, admin_users, contact_messages, portfolio_images, portfolio_items, portfolio_categories,
-  testimonials, faqs, pricing_plans, stats, services, resume_items, skills, social_links, nav_menu, site_settings;
-SET FOREIGN_KEY_CHECKS = 1;
+--
+-- Table structure for table `admin_users`
+--
 
--- Key/value store: hero, about, section titles, contact info, footer text ...
-CREATE TABLE site_settings (
-  setting_key   VARCHAR(64)  NOT NULL PRIMARY KEY,
-  setting_value TEXT         NULL
+DROP TABLE IF EXISTS `admin_users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `admin_users` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `last_login_at` datetime DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `admin_users`
+--
+
+LOCK TABLES `admin_users` WRITE;
+/*!40000 ALTER TABLE `admin_users` DISABLE KEYS */;
+INSERT INTO `admin_users` VALUES (1,'admin','admin@example.com','$2y$10$WPtRlBe4NpbjXKbg7GIanufqGkRctgbleqHTuenzvFcSc6Yy37CyO','2026-11-02 15:35:03','2026-11-02 09:35:03');
+/*!40000 ALTER TABLE `admin_users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `contact_messages`
+--
+
+DROP TABLE IF EXISTS `contact_messages`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contact_messages` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `subject` varchar(200) NOT NULL,
+  `message` text NOT NULL,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `user_agent` varchar(255) DEFAULT NULL,
+  `is_read` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `idx_ip_created` (`ip_address`,`created_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `contact_messages`
+--
+
+LOCK TABLES `contact_messages` WRITE;
+/*!40000 ALTER TABLE `contact_messages` DISABLE KEYS */;
+INSERT INTO `contact_messages` VALUES (1,'Sample Visitor','visitor@example.com','Welcome','This is a sample message stored by the contact form.','127.0.0.1',NULL,0,'2026-11-02 08:50:14');
+/*!40000 ALTER TABLE `contact_messages` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `faqs`
+--
+
+DROP TABLE IF EXISTS `faqs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `faqs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `question` varchar(255) NOT NULL,
+  `answer` text NOT NULL,
+  `sort_order` int(11) NOT NULL DEFAULT 0,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `faqs`
+--
+
+LOCK TABLES `faqs` WRITE;
+/*!40000 ALTER TABLE `faqs` DISABLE KEYS */;
+INSERT INTO `faqs` VALUES (6,'When is the deadline for submitting individual income tax returns in Bangladesh?','The general deadline for submitting individual income tax returns is usually November 30 of each tax year, as set by the National Board of Revenue (NBR).',1,1),(7,'What is the schedule for monthly VAT return submission?','Businesses registered under VAT must submit their monthly return (Mushak 9.1) within the 15th day of the following month.',2,1),(8,'What documents are required for private limited company registration at RJSC?','Key documents include Name Clearance from RJSC, Memorandum and Articles of Association (MoA/AoA), directors\' NID copies, passport-size photographs, and encashment certificate of paid-up capital.',3,1),(9,'How can I obtain a trade license for my business in Dhaka?','A trade license is issued by the respective City Corporation or Municipality office upon submitting tenancy agreement, trade particulars, passport-size photos, and a valid e-TIN.',4,1),(10,'How do I book a compliance consultation session?','You can easily schedule a consultation by filling out the contact form on our website or by reaching out directly via phone or WhatsApp.',5,1);
+/*!40000 ALTER TABLE `faqs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `login_attempts`
+--
+
+DROP TABLE IF EXISTS `login_attempts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `login_attempts` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ip_address` varchar(45) NOT NULL,
+  `username` varchar(100) DEFAULT NULL,
+  `attempted_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `idx_ip_time` (`ip_address`,`attempted_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-CREATE TABLE skills (
-  id         INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  name       VARCHAR(100) NOT NULL,
-  percentage TINYINT UNSIGNED NOT NULL DEFAULT 0,
-  sort_order INT NOT NULL DEFAULT 0,
-  is_active  TINYINT(1) NOT NULL DEFAULT 1
+--
+-- Dumping data for table `login_attempts`
+--
+
+LOCK TABLES `login_attempts` WRITE;
+/*!40000 ALTER TABLE `login_attempts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `login_attempts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `nav_menu`
+--
+
+DROP TABLE IF EXISTS `nav_menu`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `nav_menu` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `label` varchar(50) NOT NULL,
+  `url` varchar(255) NOT NULL DEFAULT '#',
+  `sort_order` int(11) NOT NULL DEFAULT 0,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `nav_menu`
+--
+
+LOCK TABLES `nav_menu` WRITE;
+/*!40000 ALTER TABLE `nav_menu` DISABLE KEYS */;
+INSERT INTO `nav_menu` VALUES (1,'Home','index.php',1,1),(2,'About','about.php',2,1),(3,'Services','services.php',3,1),(4,'Portfolio','portfolio.php',4,1),(5,'Contact','contact.php',5,1);
+/*!40000 ALTER TABLE `nav_menu` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `portfolio_categories`
+--
+
+DROP TABLE IF EXISTS `portfolio_categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `portfolio_categories` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `slug` varchar(100) NOT NULL COMMENT 'lowercase letters/digits/hyphens - used as CSS class filter-<slug>',
+  `sort_order` int(11) NOT NULL DEFAULT 0,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `slug` (`slug`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `portfolio_categories`
+--
+
+LOCK TABLES `portfolio_categories` WRITE;
+/*!40000 ALTER TABLE `portfolio_categories` DISABLE KEYS */;
+INSERT INTO `portfolio_categories` VALUES (1,'App','app',1,1),(2,'Product','product',2,1),(3,'Branding','branding',3,1),(4,'Books','books',4,1);
+/*!40000 ALTER TABLE `portfolio_categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `portfolio_images`
+--
+
+DROP TABLE IF EXISTS `portfolio_images`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `portfolio_images` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `portfolio_item_id` int(10) unsigned NOT NULL,
+  `image_path` varchar(255) NOT NULL,
+  `sort_order` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `fk_img_item` (`portfolio_item_id`),
+  CONSTRAINT `fk_img_item` FOREIGN KEY (`portfolio_item_id`) REFERENCES `portfolio_items` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `portfolio_images`
+--
+
+LOCK TABLES `portfolio_images` WRITE;
+/*!40000 ALTER TABLE `portfolio_images` DISABLE KEYS */;
+INSERT INTO `portfolio_images` VALUES (1,1,'img/app-1.jpg',1),(2,1,'img/product-1.jpg',2),(3,1,'img/branding-1.jpg',3),(4,1,'img/books-1.jpg',4),(5,2,'img/app-1.jpg',1),(6,2,'img/product-1.jpg',2),(7,2,'img/branding-1.jpg',3),(8,2,'img/books-1.jpg',4),(9,3,'img/app-1.jpg',1),(10,3,'img/product-1.jpg',2),(11,3,'img/branding-1.jpg',3),(12,3,'img/books-1.jpg',4),(13,4,'img/app-1.jpg',1),(14,4,'img/product-1.jpg',2),(15,4,'img/branding-1.jpg',3),(16,4,'img/books-1.jpg',4),(17,5,'img/app-1.jpg',1),(18,5,'img/product-1.jpg',2),(19,5,'img/branding-1.jpg',3),(20,5,'img/books-1.jpg',4),(21,6,'img/app-1.jpg',1),(22,6,'img/product-1.jpg',2),(23,6,'img/branding-1.jpg',3),(24,6,'img/books-1.jpg',4),(25,7,'img/app-1.jpg',1),(26,7,'img/product-1.jpg',2),(27,7,'img/branding-1.jpg',3),(28,7,'img/books-1.jpg',4),(29,8,'img/app-1.jpg',1),(30,8,'img/product-1.jpg',2),(31,8,'img/branding-1.jpg',3),(32,8,'img/books-1.jpg',4),(33,9,'img/app-1.jpg',1),(34,9,'img/product-1.jpg',2),(35,9,'img/branding-1.jpg',3),(36,9,'img/books-1.jpg',4),(37,10,'img/app-1.jpg',1),(38,10,'img/product-1.jpg',2),(39,10,'img/branding-1.jpg',3),(40,10,'img/books-1.jpg',4),(41,11,'img/app-1.jpg',1),(42,11,'img/product-1.jpg',2),(43,11,'img/branding-1.jpg',3),(44,11,'img/books-1.jpg',4),(45,12,'img/app-1.jpg',1),(46,12,'img/product-1.jpg',2),(47,12,'img/branding-1.jpg',3),(48,12,'img/books-1.jpg',4);
+/*!40000 ALTER TABLE `portfolio_images` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `portfolio_items`
+--
+
+DROP TABLE IF EXISTS `portfolio_items`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `portfolio_items` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `category_id` int(10) unsigned NOT NULL,
+  `title` varchar(150) NOT NULL,
+  `short_description` varchar(255) NOT NULL,
+  `image_path` varchar(255) NOT NULL,
+  `details_title` varchar(255) DEFAULT NULL,
+  `details_text` text DEFAULT NULL COMMENT 'paragraphs separated by a blank line',
+  `client` varchar(150) DEFAULT NULL,
+  `project_date` date DEFAULT NULL,
+  `project_url` varchar(255) DEFAULT NULL,
+  `testimonial_id` int(10) unsigned DEFAULT NULL,
+  `sort_order` int(11) NOT NULL DEFAULT 0,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`),
+  KEY `fk_pi_cat` (`category_id`),
+  KEY `fk_pi_test` (`testimonial_id`),
+  CONSTRAINT `fk_pi_cat` FOREIGN KEY (`category_id`) REFERENCES `portfolio_categories` (`id`),
+  CONSTRAINT `fk_pi_test` FOREIGN KEY (`testimonial_id`) REFERENCES `testimonials` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `portfolio_items`
+--
+
+LOCK TABLES `portfolio_items` WRITE;
+/*!40000 ALTER TABLE `portfolio_items` DISABLE KEYS */;
+INSERT INTO `portfolio_items` VALUES (1,1,'App 1','Lorem ipsum, dolor sit amet consectetur','img/app-1.jpg','This is an example of portfolio details','Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.\n\nAmet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.\n\nImpedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.\n\nSunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.','ASU Company','2020-03-01','https://www.example.com',2,1,1),(2,2,'Product 1','Lorem ipsum, dolor sit amet consectetur','img/product-1.jpg','This is an example of portfolio details','Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.\n\nAmet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.\n\nImpedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.\n\nSunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.','ASU Company','2020-03-01','https://www.example.com',2,2,1),(3,3,'Branding 1','Lorem ipsum, dolor sit amet consectetur','img/branding-1.jpg','This is an example of portfolio details','Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.\n\nAmet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.\n\nImpedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.\n\nSunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.','ASU Company','2020-03-01','https://www.example.com',2,3,1),(4,4,'Books 1','Lorem ipsum, dolor sit amet consectetur','img/books-1.jpg','This is an example of portfolio details','Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.\n\nAmet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.\n\nImpedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.\n\nSunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.','ASU Company','2020-03-01','https://www.example.com',2,4,1),(5,1,'App 2','Lorem ipsum, dolor sit amet consectetur','img/app-2.jpg','This is an example of portfolio details','Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.\n\nAmet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.\n\nImpedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.\n\nSunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.','ASU Company','2020-03-01','https://www.example.com',2,5,1),(6,2,'Product 2','Lorem ipsum, dolor sit amet consectetur','img/product-2.jpg','This is an example of portfolio details','Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.\n\nAmet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.\n\nImpedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.\n\nSunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.','ASU Company','2020-03-01','https://www.example.com',2,6,1),(7,3,'Branding 2','Lorem ipsum, dolor sit amet consectetur','img/branding-2.jpg','This is an example of portfolio details','Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.\n\nAmet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.\n\nImpedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.\n\nSunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.','ASU Company','2020-03-01','https://www.example.com',2,7,1),(8,4,'Books 2','Lorem ipsum, dolor sit amet consectetur','img/books-2.jpg','This is an example of portfolio details','Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.\n\nAmet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.\n\nImpedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.\n\nSunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.','ASU Company','2020-03-01','https://www.example.com',2,8,1),(9,1,'App 3','Lorem ipsum, dolor sit amet consectetur','img/app-3.jpg','This is an example of portfolio details','Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.\n\nAmet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.\n\nImpedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.\n\nSunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.','ASU Company','2020-03-01','https://www.example.com',2,9,1),(10,2,'Product 3','Lorem ipsum, dolor sit amet consectetur','img/product-3.jpg','This is an example of portfolio details','Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.\n\nAmet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.\n\nImpedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.\n\nSunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.','ASU Company','2020-03-01','https://www.example.com',2,10,1),(11,3,'Branding 3','Lorem ipsum, dolor sit amet consectetur','img/branding-3.jpg','This is an example of portfolio details','Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.\n\nAmet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.\n\nImpedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.\n\nSunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.','ASU Company','2020-03-01','https://www.example.com',2,11,1),(12,4,'Books 3','Lorem ipsum, dolor sit amet consectetur','img/books-3.jpg','This is an example of portfolio details','Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.\n\nAmet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.\n\nImpedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.\n\nSunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.','ASU Company','2020-03-01','https://www.example.com',2,12,1);
+/*!40000 ALTER TABLE `portfolio_items` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `pricing_plans`
+--
+
+DROP TABLE IF EXISTS `pricing_plans`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pricing_plans` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(150) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `sort_order` int(11) NOT NULL DEFAULT 0,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pricing_plans`
+--
+
+LOCK TABLES `pricing_plans` WRITE;
+/*!40000 ALTER TABLE `pricing_plans` DISABLE KEYS */;
+INSERT INTO `pricing_plans` VALUES (7,'Individual Tax Return (e-TIN)',50.00,1,1),(8,'Monthly VAT Return (Mushak 9.1)',100.00,2,1),(9,'Trade License Registration',150.00,3,1),(10,'Private Ltd Company Formation',175.00,4,1),(11,'SME Compliance Retainer',210.00,5,1),(12,'Tax Audit & Legal Advisory',250.00,6,1);
+/*!40000 ALTER TABLE `pricing_plans` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `resume_items`
+--
+
+DROP TABLE IF EXISTS `resume_items`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `resume_items` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `section` enum('summary','education','experience') NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `period` varchar(100) DEFAULT NULL,
+  `subtitle` text DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `bullets` text DEFAULT NULL,
+  `sort_order` int(11) NOT NULL DEFAULT 0,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`),
+  KEY `idx_section` (`section`,`sort_order`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `resume_items`
+--
+
+LOCK TABLES `resume_items` WRITE;
+/*!40000 ALTER TABLE `resume_items` DISABLE KEYS */;
+INSERT INTO `resume_items` VALUES (6,'summary','S M MAHFUZUR RAHMAN',NULL,'Senior Business Compliance & Tax Consultant','Experienced Business Compliance and Tax Consultant with a strong track record in NBR taxation, VAT management, and RJSC company formation in Bangladesh. Dedicated to helping businesses and individuals achieve absolute legal compliance and financial accuracy.','Expertise in NBR Tax & VAT Consultancy\nSpecialized in RJSC Company Formation & Trade License Support\nCommitted to Timely Delivery and Accurate Financial Solutions',1,1),(7,'education','MASTER OF BUSINESS ADMINISTRATION (MBA)','2015 - 2016','University of Dhaka, Dhaka','Specialized in Corporate Finance, Advanced Auditing, and Taxation Laws in Bangladesh.','Major in Accounting & Information Systems\nFocused on National Board of Revenue (NBR) compliance structures',2,1),(8,'education','BACHELOR OF BUSINESS ADMINISTRATION (BBA)','2012 - 2015','University of Dhaka, Dhaka','Gained strong foundational knowledge in financial accounting, business legal environment, and tax management.','Graduated with Honors in Accounting\nCoursework in Commercial Law and Business Statistics',3,1),(9,'experience','SENIOR TAX & COMPLIANCE SPECIALIST','2017 - Present','Business Compliance Experts, Dhaka','Leading tax and business compliance strategies for corporate clients, small businesses, and high-net-worth individuals across Bangladesh.','Managed corporate tax filing, e-TIN processing, and annual NBR income tax assessments.\nHandled monthly VAT return preparation (Mushak 9.1) and regulatory compliance audits.\nSupervised company incorporation at RJSC, trade license renewals, and legal documentation.\nProvided strategic financial consultation and bookkeeping oversight for clients.',4,1),(10,'experience','TAX & ACCOUNTS EXECUTIVE','2017 - 2020','Financial & Advisory Services Ltd., Dhaka','Assisted individual and corporate clients with income tax filing, bookkeeping, and business license processing.','Prepared and filed individual e-TIN income tax returns for diverse clients.\nAssisted in trade license registration and City Corporation compliance updates.\nMaintained financial records, ledger books, and monthly bank reconciliation statements.\nCoordinated with NBR officials for tax assessments and clearance certificates.',5,1);
+/*!40000 ALTER TABLE `resume_items` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `services`
+--
+
+DROP TABLE IF EXISTS `services`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `services` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `icon` varchar(64) NOT NULL COMMENT 'Bootstrap Icons class, e.g. bi-activity',
+  `title` varchar(150) NOT NULL,
+  `description` text NOT NULL,
+  `sort_order` int(11) NOT NULL DEFAULT 0,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `services`
+--
+
+LOCK TABLES `services` WRITE;
+/*!40000 ALTER TABLE `services` DISABLE KEYS */;
+INSERT INTO `services` VALUES (7,'bi-receipt-cutoff','VAT Consultancy & Registration','Comprehensive support for new BIN registration, monthly VAT returns submission (Mushak 9.1), and overall regulatory compliance under Bangladeshi VAT laws.',1,1),(8,'bi-currency-exchange','Income Tax Services','Professional assistance with e-TIN registration, personal and corporate annual income tax return preparation, submission, and tax assessment management.',2,1),(9,'bi-building-check','Company Formation & Registration','End-to-end registration services with the Registrar of Joint Stock Companies and Firms (RJSC) for Private Limited Companies, Partnership firms, and Branch offices.',3,1),(10,'bi-card-heading','Trade License & TIN Support','Fast and reliable assistance for acquiring and renewing trade licenses from City Corporations/Municipalities, alongside corporate TIN support.',4,1),(11,'bi-shield-check','RJSC & Business Compliance','Annual return filings, share transfers, name changes, and regular secretarial maintenance to keep your corporate entity 100% compliant.',5,1),(12,'bi-journal-check','Accounting & Financial Solutions','Accurate bookkeeping, financial statement preparation, and customized balance sheet generation for bank loans, audits, and management review.',6,1);
+/*!40000 ALTER TABLE `services` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `site_settings`
+--
+
+DROP TABLE IF EXISTS `site_settings`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `site_settings` (
+  `setting_key` varchar(64) NOT NULL,
+  `setting_value` text DEFAULT NULL,
+  PRIMARY KEY (`setting_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `site_settings`
+--
+
+LOCK TABLES `site_settings` WRITE;
+/*!40000 ALTER TABLE `site_settings` DISABLE KEYS */;
+INSERT INTO `site_settings` VALUES ('about_email','contact@example.com'),('about_heading','About me'),('about_image','img/mahfuzur_rahman.jpg'),('about_name','S M MAHFUZUR RAHMAN'),('about_phone','+880 1745 954670'),('about_profile','Senior Business Compliance & Tax Consultant'),('about_text','I am a dedicated Business Compliance Expert in Bangladesh with extensive experience in navigating the complexities of NBR tax laws, VAT structures, and corporate legalities. My expertise lies in helping individuals, startups, and established companies maintain 100% legal compliance while optimizing their financial workflows.\n\nFrom company registration at RJSC and trade license processing to annual income tax filing and monthly VAT returns, I provide end-to-end consultancy. My goal is to streamline your business operations so you can focus on growth while staying fully compliant with Bangladeshi regulations.\n\nWhether you need strategic tax planning, corporate audit defense, or financial documentation, I deliver accurate advice, reliable execution, and timely support tailored to your business needs.'),('contact_address','A108 Adam Street, New York, NY 535022'),('contact_email','info@example.com'),('contact_phone','+880 1745 954670'),('contact_subtitle','Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit'),('contact_title','Contact'),('faq_intro','Find answers to frequently asked questions about our tax, VAT, company registration, and business compliance services in Bangladesh.'),('hero_cta_text',''),('hero_cta_url','#contact'),('hero_image','img/hero-img.jpg'),('hero_subtitle',''),('hero_title','I am S M MAHFUZUR RAHMAN'),('hero_typed_items','Senior Business Compliance & Tax Consultant, NBR Tax & VAT Expert, RJSC Company Formation Specialist'),('meta_description',''),('meta_keywords',''),('page_banner_image','img/hero-img.jpg'),('portfolio_subtitle','Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit'),('portfolio_title','Portfolio'),('pricing_subtitle','Affordable and transparent pricing packages for your tax, VAT, and business compliance needs in Bangladesh'),('pricing_title','Pricing'),('resume_education_heading','Education'),('resume_experience_heading','Professional Experience'),('resume_subtitle','Professional background, qualifications, and extensive experience in corporate compliance'),('resume_summary_heading','Sumary'),('resume_title','Resume'),('services_subtitle','Professional solutions, accurate advice, and timely support for all your business compliance needs in Bangladesh'),('services_title','Services'),('site_logo','img/business_compliance_logo.jpg'),('site_name','Business Compliance'),('stats_image','img/stats-bg.jpg'),('testimonials_bg','img/testimonials-bg.jpg');
+/*!40000 ALTER TABLE `site_settings` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `skills`
+--
+
+DROP TABLE IF EXISTS `skills`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `skills` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `percentage` tinyint(3) unsigned NOT NULL DEFAULT 0,
+  `sort_order` int(11) NOT NULL DEFAULT 0,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `skills`
+--
+
+LOCK TABLES `skills` WRITE;
+/*!40000 ALTER TABLE `skills` DISABLE KEYS */;
+INSERT INTO `skills` VALUES (1,'HTML',100,1,1),(2,'CSS',90,2,1),(3,'JavaScript',75,3,1),(4,'Photoshop',55,4,1);
+/*!40000 ALTER TABLE `skills` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `social_links`
+--
+
+DROP TABLE IF EXISTS `social_links`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `social_links` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `icon` varchar(64) NOT NULL COMMENT 'Bootstrap Icons class, e.g. bi-twitter-x',
+  `url` varchar(255) NOT NULL DEFAULT '#',
+  `sort_order` int(11) NOT NULL DEFAULT 0,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `social_links`
+--
+
+LOCK TABLES `social_links` WRITE;
+/*!40000 ALTER TABLE `social_links` DISABLE KEYS */;
+INSERT INTO `social_links` VALUES (1,'bi-twitter-x','#',1,1),(2,'bi-facebook','#',2,1),(3,'bi-instagram','#',3,1),(4,'bi-linkedin','#',4,1);
+/*!40000 ALTER TABLE `social_links` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `stats`
+--
+
+DROP TABLE IF EXISTS `stats`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `stats` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `label` varchar(100) NOT NULL,
+  `value` int(10) unsigned NOT NULL DEFAULT 0,
+  `sort_order` int(11) NOT NULL DEFAULT 0,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `stats`
+--
+
+LOCK TABLES `stats` WRITE;
+/*!40000 ALTER TABLE `stats` DISABLE KEYS */;
+INSERT INTO `stats` VALUES (1,'Clients',232,1,1),(2,'Projects',521,2,1),(3,'Hours Of Support',1453,3,1),(4,'Awards',32,4,1);
+/*!40000 ALTER TABLE `stats` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `testimonials`
+--
+
+DROP TABLE IF EXISTS `testimonials`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `testimonials` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `position` varchar(100) NOT NULL,
+  `image_path` varchar(255) NOT NULL,
+  `rating` tinyint(3) unsigned NOT NULL DEFAULT 5,
+  `quote` text NOT NULL,
+  `sort_order` int(11) NOT NULL DEFAULT 0,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `testimonials`
+--
+
+LOCK TABLES `testimonials` WRITE;
+/*!40000 ALTER TABLE `testimonials` DISABLE KEYS */;
+INSERT INTO `testimonials` VALUES (1,'Saul Goodman','Ceo & Founder','img/testimonials-1.jpg',5,'Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.',1,1),(2,'Sara Wilsson','Designer','img/testimonials-2.jpg',5,'Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.',2,1),(3,'Jena Karlis','Store Owner','img/testimonials-3.jpg',5,'Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.',3,1),(4,'Matt Brandon','Freelancer','img/testimonials-4.jpg',5,'Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.',4,1),(5,'John Larson','Entrepreneur','img/testimonials-5.jpg',5,'Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.',5,1);
+/*!40000 ALTER TABLE `testimonials` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2026-11-03 11:15:45
 
--- section: summary | education | experience. 'bullets' = one <li> per line.
-CREATE TABLE resume_items (
-  id          INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  section     ENUM('summary','education','experience') NOT NULL,
-  title       VARCHAR(255) NOT NULL,
-  period      VARCHAR(100) NULL,
-  subtitle    TEXT NULL,
-  description TEXT NULL,
-  bullets     TEXT NULL,
-  sort_order  INT NOT NULL DEFAULT 0,
-  is_active   TINYINT(1) NOT NULL DEFAULT 1,
-  KEY idx_section (section, sort_order)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE services (
-  id          INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  icon        VARCHAR(64)  NOT NULL COMMENT 'Bootstrap Icons class, e.g. bi-activity',
-  title       VARCHAR(150) NOT NULL,
-  description TEXT NOT NULL,
-  sort_order  INT NOT NULL DEFAULT 0,
-  is_active   TINYINT(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE stats (
-  id         INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  label      VARCHAR(100) NOT NULL,
-  value      INT UNSIGNED NOT NULL DEFAULT 0,
-  sort_order INT NOT NULL DEFAULT 0,
-  is_active  TINYINT(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE portfolio_categories (
-  id         INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  name       VARCHAR(100) NOT NULL,
-  slug       VARCHAR(100) NOT NULL UNIQUE COMMENT 'lowercase letters/digits/hyphens - used as CSS class filter-<slug>',
-  sort_order INT NOT NULL DEFAULT 0,
-  is_active  TINYINT(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE testimonials (
-  id         INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  name       VARCHAR(100) NOT NULL,
-  position   VARCHAR(100) NOT NULL,
-  image_path VARCHAR(255) NOT NULL,
-  rating     TINYINT UNSIGNED NOT NULL DEFAULT 5,
-  quote      TEXT NOT NULL,
-  sort_order INT NOT NULL DEFAULT 0,
-  is_active  TINYINT(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE portfolio_items (
-  id                INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  category_id       INT UNSIGNED NOT NULL,
-  title             VARCHAR(150) NOT NULL,
-  short_description VARCHAR(255) NOT NULL,
-  image_path        VARCHAR(255) NOT NULL,
-  details_title     VARCHAR(255) NULL,
-  details_text      TEXT NULL COMMENT 'paragraphs separated by a blank line',
-  client            VARCHAR(150) NULL,
-  project_date      DATE NULL,
-  project_url       VARCHAR(255) NULL,
-  testimonial_id    INT UNSIGNED NULL,
-  sort_order        INT NOT NULL DEFAULT 0,
-  is_active         TINYINT(1) NOT NULL DEFAULT 1,
-  CONSTRAINT fk_pi_cat  FOREIGN KEY (category_id)    REFERENCES portfolio_categories(id) ON DELETE RESTRICT,
-  CONSTRAINT fk_pi_test FOREIGN KEY (testimonial_id) REFERENCES testimonials(id)         ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE portfolio_images (
-  id                INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  portfolio_item_id INT UNSIGNED NOT NULL,
-  image_path        VARCHAR(255) NOT NULL,
-  sort_order        INT NOT NULL DEFAULT 0,
-  CONSTRAINT fk_img_item FOREIGN KEY (portfolio_item_id) REFERENCES portfolio_items(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE pricing_plans (
-  id         INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  title      VARCHAR(150) NOT NULL,
-  price      DECIMAL(10,2) NOT NULL,
-  sort_order INT NOT NULL DEFAULT 0,
-  is_active  TINYINT(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE faqs (
-  id         INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  question   VARCHAR(255) NOT NULL,
-  answer     TEXT NOT NULL,
-  sort_order INT NOT NULL DEFAULT 0,
-  is_active  TINYINT(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE social_links (
-  id         INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  icon       VARCHAR(64)  NOT NULL COMMENT 'Bootstrap Icons class, e.g. bi-twitter-x',
-  url        VARCHAR(255) NOT NULL DEFAULT '#',
-  sort_order INT NOT NULL DEFAULT 0,
-  is_active  TINYINT(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Main website navigation (managed in admin > Menu)
-CREATE TABLE nav_menu (
-  id         INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  label      VARCHAR(50)  NOT NULL,
-  url        VARCHAR(255) NOT NULL DEFAULT '#',
-  sort_order INT NOT NULL DEFAULT 0,
-  is_active  TINYINT(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Public contact form submissions land here
-CREATE TABLE contact_messages (
-  id         INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  name       VARCHAR(100) NOT NULL,
-  email      VARCHAR(150) NOT NULL,
-  subject    VARCHAR(200) NOT NULL,
-  message    TEXT NOT NULL,
-  ip_address VARCHAR(45)  NULL,
-  user_agent VARCHAR(255) NULL,
-  is_read    TINYINT(1) NOT NULL DEFAULT 0,
-  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  KEY idx_ip_created (ip_address, created_at)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
--- ---------------------------- CMS / admin tables ---------------------------
--- Admin accounts. password_hash is created with PHP password_hash() (bcrypt).
--- The first time the admin login page is opened with an EMPTY table, the default
--- account  admin / Admin@12345  is created automatically - change it after login.
-CREATE TABLE admin_users (
-  id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  username      VARCHAR(50)  NOT NULL UNIQUE,
-  email         VARCHAR(150) NOT NULL UNIQUE,
-  password_hash VARCHAR(255) NOT NULL,
-  last_login_at DATETIME NULL,
-  created_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Failed-login log used for brute-force lockout (5 failures / 15 min / IP)
-CREATE TABLE login_attempts (
-  id           INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  ip_address   VARCHAR(45)  NOT NULL,
-  username     VARCHAR(100) NULL,
-  attempted_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  KEY idx_ip_time (ip_address, attempted_at)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- ============================ SAMPLE DATA ===================================
-
-INSERT INTO site_settings (setting_key, setting_value) VALUES
-  ('site_name', 'DevFolio'),
-  ('site_logo', ''),
-  ('meta_description', ''),
-  ('meta_keywords', ''),
-  ('hero_image', 'img/hero-img.jpg'),
-  ('hero_title', 'I am Morgan Freeman'),
-  ('hero_typed_items', 'Designer, Developer, Freelancer, Photographer'),
-  ('about_image', 'img/profile-img.jpg'),
-  ('about_heading', 'About me'),
-  ('about_name', 'Morgan Freeman'),
-  ('about_profile', 'full stack developer'),
-  ('about_email', 'contact@example.com'),
-  ('about_phone', '(617) 557-0089'),
-  ('about_text', 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Nulla porttitor accumsan tincidunt.
-
-Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vivamus suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. porttitor at sem.
-
-Nulla porttitor accumsan tincidunt. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Nulla porttitor accumsan tincidunt. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.'),
-  ('resume_title', 'Resume'),
-  ('resume_subtitle', 'Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit'),
-  ('services_title', 'Services'),
-  ('services_subtitle', 'Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit'),
-  ('portfolio_title', 'Portfolio'),
-  ('portfolio_subtitle', 'Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit'),
-  ('pricing_title', 'Pricing'),
-  ('pricing_subtitle', 'Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit'),
-  ('contact_title', 'Contact'),
-  ('contact_subtitle', 'Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit'),
-  ('resume_summary_heading', 'Sumary'),
-  ('resume_education_heading', 'Education'),
-  ('resume_experience_heading', 'Professional Experience'),
-  ('stats_image', 'img/stats-bg.jpg'),
-  ('testimonials_bg', 'img/testimonials-bg.jpg'),
-  ('faq_intro', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit'),
-  ('contact_address', 'A108 Adam Street, New York, NY 535022'),
-  ('contact_phone', '+1 5589 55488 55'),
-  ('contact_email', 'info@example.com');
-
-INSERT INTO skills (name, percentage, sort_order) VALUES
-  ('HTML', 100, 1),
-  ('CSS', 90, 2),
-  ('JavaScript', 75, 3),
-  ('Photoshop', 55, 4);
-
-INSERT INTO resume_items (section, title, period, subtitle, description, bullets, sort_order) VALUES
-  ('summary', 'Brandon Johnson', NULL, 'Innovative and deadline-driven Graphic Designer with 3+ years of experience designing and developing user-centered digital/print marketing material from initial concept to final, polished deliverable.', NULL, 'Portland par 127,Orlando, FL
-(123) 456-7891
-alice.barkley@example.com', 1),
-  ('education', 'Master of Fine Arts & Graphic Design', '2015 - 2016', 'Rochester Institute of Technology, Rochester, NY', 'Qui deserunt veniam. Et sed aliquam labore tempore sed quisquam iusto autem sit. Ea vero voluptatum qui ut dignissimos deleniti nerada porti sand markend', NULL, 1),
-  ('education', 'Bachelor of Fine Arts & Graphic Design', '2010 - 2014', 'Rochester Institute of Technology, Rochester, NY', 'Quia nobis sequi est occaecati aut. Repudiandae et iusto quae reiciendis et quis Eius vel ratione eius unde vitae rerum voluptates asperiores voluptatem Earum molestiae consequatur neque etlon sader mart dila', NULL, 2),
-  ('experience', 'Senior graphic design specialist', '2019 - Present', 'Experion, New York, NY', NULL, 'Lead in the design, development, and implementation of the graphic, layout, and production communication materials
-Delegate tasks to the 7 members of the design team and provide counsel on all aspects of the project.
-Supervise the assessment of all graphic materials in order to ensure quality and accuracy of the design
-Oversee the efficient use of production project budgets ranging from $2,000 - $25,000', 1),
-  ('experience', 'Graphic design specialist', '2017 - 2018', 'Stepping Stone Advertising, New York, NY', NULL, 'Developed numerous marketing programs (logos, brochures,infographics, presentations, and advertisements).
-Managed up to 5 projects or tasks at a given time while under pressure
-Recommended and consulted with clients on the most appropriate graphic design
-Created 4+ design presentations and proposals a month for clients and account managers', 2);
-
-INSERT INTO services (icon, title, description, sort_order) VALUES
-  ('bi-activity', 'Nesciunt Mete', 'Provident nihil minus qui consequatur non omnis maiores. Eos accusantium minus dolores iure perferendis tempore et consequatur.', 1),
-  ('bi-broadcast', 'Eosle Commodi', 'Ut autem aut autem non a. Sint sint sit facilis nam iusto sint. Libero corrupti neque eum hic non ut nesciunt dolorem.', 2),
-  ('bi-easel', 'Ledo Markt', 'Ut excepturi voluptatem nisi sed. Quidem fuga consequatur. Minus ea aut. Vel qui id voluptas adipisci eos earum corrupti.', 3),
-  ('bi-bounding-box-circles', 'Asperiores Commodit', 'Non et temporibus minus omnis sed dolor esse consequatur. Cupiditate sed error ea fuga sit provident adipisci neque.', 4),
-  ('bi-calendar4-week', 'Velit Doloremque', 'Cumque et suscipit saepe. Est maiores autem enim facilis ut aut ipsam corporis aut. Sed animi at autem alias eius labore.', 5),
-  ('bi-chat-square-text', 'Dolori Architecto', 'Hic molestias ea quibusdam eos. Fugiat enim doloremque aut neque non et debitis iure. Corrupti recusandae ducimus enim.', 6);
-
-INSERT INTO stats (label, value, sort_order) VALUES
-  ('Clients', 232, 1),
-  ('Projects', 521, 2),
-  ('Hours Of Support', 1453, 3),
-  ('Awards', 32, 4);
-
-INSERT INTO portfolio_categories (name, slug, sort_order) VALUES
-  ('App', 'app', 1),
-  ('Product', 'product', 2),
-  ('Branding', 'branding', 3),
-  ('Books', 'books', 4);
-
-INSERT INTO testimonials (name, position, image_path, rating, quote, sort_order) VALUES
-  ('Saul Goodman', 'Ceo & Founder', 'img/testimonials-1.jpg', 5, 'Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.', 1),
-  ('Sara Wilsson', 'Designer', 'img/testimonials-2.jpg', 5, 'Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.', 2),
-  ('Jena Karlis', 'Store Owner', 'img/testimonials-3.jpg', 5, 'Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.', 3),
-  ('Matt Brandon', 'Freelancer', 'img/testimonials-4.jpg', 5, 'Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.', 4),
-  ('John Larson', 'Entrepreneur', 'img/testimonials-5.jpg', 5, 'Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.', 5);
-
-INSERT INTO portfolio_items (category_id, title, short_description, image_path, details_title, details_text, client, project_date, project_url, testimonial_id, sort_order) VALUES
-  (1, 'App 1', 'Lorem ipsum, dolor sit amet consectetur', 'img/app-1.jpg', 'This is an example of portfolio details', 'Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.
-
-Amet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.
-
-Impedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.
-
-Sunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.', 'ASU Company', '2020-03-01', 'https://www.example.com', 2, 1),
-  (2, 'Product 1', 'Lorem ipsum, dolor sit amet consectetur', 'img/product-1.jpg', 'This is an example of portfolio details', 'Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.
-
-Amet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.
-
-Impedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.
-
-Sunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.', 'ASU Company', '2020-03-01', 'https://www.example.com', 2, 2),
-  (3, 'Branding 1', 'Lorem ipsum, dolor sit amet consectetur', 'img/branding-1.jpg', 'This is an example of portfolio details', 'Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.
-
-Amet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.
-
-Impedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.
-
-Sunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.', 'ASU Company', '2020-03-01', 'https://www.example.com', 2, 3),
-  (4, 'Books 1', 'Lorem ipsum, dolor sit amet consectetur', 'img/books-1.jpg', 'This is an example of portfolio details', 'Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.
-
-Amet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.
-
-Impedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.
-
-Sunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.', 'ASU Company', '2020-03-01', 'https://www.example.com', 2, 4),
-  (1, 'App 2', 'Lorem ipsum, dolor sit amet consectetur', 'img/app-2.jpg', 'This is an example of portfolio details', 'Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.
-
-Amet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.
-
-Impedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.
-
-Sunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.', 'ASU Company', '2020-03-01', 'https://www.example.com', 2, 5),
-  (2, 'Product 2', 'Lorem ipsum, dolor sit amet consectetur', 'img/product-2.jpg', 'This is an example of portfolio details', 'Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.
-
-Amet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.
-
-Impedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.
-
-Sunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.', 'ASU Company', '2020-03-01', 'https://www.example.com', 2, 6),
-  (3, 'Branding 2', 'Lorem ipsum, dolor sit amet consectetur', 'img/branding-2.jpg', 'This is an example of portfolio details', 'Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.
-
-Amet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.
-
-Impedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.
-
-Sunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.', 'ASU Company', '2020-03-01', 'https://www.example.com', 2, 7),
-  (4, 'Books 2', 'Lorem ipsum, dolor sit amet consectetur', 'img/books-2.jpg', 'This is an example of portfolio details', 'Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.
-
-Amet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.
-
-Impedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.
-
-Sunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.', 'ASU Company', '2020-03-01', 'https://www.example.com', 2, 8),
-  (1, 'App 3', 'Lorem ipsum, dolor sit amet consectetur', 'img/app-3.jpg', 'This is an example of portfolio details', 'Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.
-
-Amet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.
-
-Impedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.
-
-Sunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.', 'ASU Company', '2020-03-01', 'https://www.example.com', 2, 9),
-  (2, 'Product 3', 'Lorem ipsum, dolor sit amet consectetur', 'img/product-3.jpg', 'This is an example of portfolio details', 'Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.
-
-Amet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.
-
-Impedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.
-
-Sunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.', 'ASU Company', '2020-03-01', 'https://www.example.com', 2, 10),
-  (3, 'Branding 3', 'Lorem ipsum, dolor sit amet consectetur', 'img/branding-3.jpg', 'This is an example of portfolio details', 'Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.
-
-Amet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.
-
-Impedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.
-
-Sunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.', 'ASU Company', '2020-03-01', 'https://www.example.com', 2, 11),
-  (4, 'Books 3', 'Lorem ipsum, dolor sit amet consectetur', 'img/books-3.jpg', 'This is an example of portfolio details', 'Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.
-
-Amet consequatur qui dolore veniam voluptatem voluptatem sit. Non aspernatur atque natus ut cum nam et. Praesentium error dolores rerum minus sequi quia veritatis eum. Eos et doloribus doloremque nesciunt molestiae laboriosam.
-
-Impedit ipsum quae et aliquid doloribus et voluptatem quasi. Perspiciatis occaecati earum et magnam animi. Quibusdam non qui ea vitae suscipit vitae sunt. Repudiandae incidunt cumque minus deserunt assumenda tempore. Delectus voluptas necessitatibus est.
-
-Sunt voluptatum sapiente facilis quo odio aut ipsum repellat debitis. Molestiae et autem libero. Explicabo et quod necessitatibus similique quis dolor eum. Numquam eaque praesentium rem et qui nesciunt.', 'ASU Company', '2020-03-01', 'https://www.example.com', 2, 12);
-
-INSERT INTO portfolio_images (portfolio_item_id, image_path, sort_order) VALUES
-  (1, 'img/app-1.jpg', 1),
-  (1, 'img/product-1.jpg', 2),
-  (1, 'img/branding-1.jpg', 3),
-  (1, 'img/books-1.jpg', 4),
-  (2, 'img/app-1.jpg', 1),
-  (2, 'img/product-1.jpg', 2),
-  (2, 'img/branding-1.jpg', 3),
-  (2, 'img/books-1.jpg', 4),
-  (3, 'img/app-1.jpg', 1),
-  (3, 'img/product-1.jpg', 2),
-  (3, 'img/branding-1.jpg', 3),
-  (3, 'img/books-1.jpg', 4),
-  (4, 'img/app-1.jpg', 1),
-  (4, 'img/product-1.jpg', 2),
-  (4, 'img/branding-1.jpg', 3),
-  (4, 'img/books-1.jpg', 4),
-  (5, 'img/app-1.jpg', 1),
-  (5, 'img/product-1.jpg', 2),
-  (5, 'img/branding-1.jpg', 3),
-  (5, 'img/books-1.jpg', 4),
-  (6, 'img/app-1.jpg', 1),
-  (6, 'img/product-1.jpg', 2),
-  (6, 'img/branding-1.jpg', 3),
-  (6, 'img/books-1.jpg', 4),
-  (7, 'img/app-1.jpg', 1),
-  (7, 'img/product-1.jpg', 2),
-  (7, 'img/branding-1.jpg', 3),
-  (7, 'img/books-1.jpg', 4),
-  (8, 'img/app-1.jpg', 1),
-  (8, 'img/product-1.jpg', 2),
-  (8, 'img/branding-1.jpg', 3),
-  (8, 'img/books-1.jpg', 4),
-  (9, 'img/app-1.jpg', 1),
-  (9, 'img/product-1.jpg', 2),
-  (9, 'img/branding-1.jpg', 3),
-  (9, 'img/books-1.jpg', 4),
-  (10, 'img/app-1.jpg', 1),
-  (10, 'img/product-1.jpg', 2),
-  (10, 'img/branding-1.jpg', 3),
-  (10, 'img/books-1.jpg', 4),
-  (11, 'img/app-1.jpg', 1),
-  (11, 'img/product-1.jpg', 2),
-  (11, 'img/branding-1.jpg', 3),
-  (11, 'img/books-1.jpg', 4),
-  (12, 'img/app-1.jpg', 1),
-  (12, 'img/product-1.jpg', 2),
-  (12, 'img/branding-1.jpg', 3),
-  (12, 'img/books-1.jpg', 4);
-
-INSERT INTO pricing_plans (title, price, sort_order) VALUES
-  ('Portrait Photography', 160.00, 1),
-  ('Fashion Photography', 300.00, 2),
-  ('Sports Photography', 200.00, 3),
-  ('Still Life Photography', 120.00, 4),
-  ('Wedding Photography', 500.00, 5),
-  ('Photojournalism', 200.00, 6);
-
-INSERT INTO faqs (question, answer, sort_order) VALUES
-  ('Non consectetur a erat nam at lectus urna duis?', 'Feugiat pretium nibh ipsum consequat. Tempus iaculis urna id volutpat lacus laoreet non curabitur gravida. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non.', 1),
-  ('Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque?', 'Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum velit laoreet id donec ultrices. Fringilla phasellus faucibus scelerisque eleifend donec pretium. Est pellentesque elit ullamcorper dignissim. Mauris ultrices eros in cursus turpis massa tincidunt dui.', 2),
-  ('Dolor sit amet consectetur adipiscing elit pellentesque?', 'Eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Faucibus pulvinar elementum integer enim. Sem nulla pharetra diam sit amet nisl suscipit. Rutrum tellus pellentesque eu tincidunt. Lectus urna duis convallis convallis tellus. Urna molestie at elementum eu facilisis sed odio morbi quis', 3),
-  ('Ac odio tempor orci dapibus. Aliquam eleifend mi in nulla?', 'Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum velit laoreet id donec ultrices. Fringilla phasellus faucibus scelerisque eleifend donec pretium. Est pellentesque elit ullamcorper dignissim. Mauris ultrices eros in cursus turpis massa tincidunt dui.', 4),
-  ('Tempus quam pellentesque nec nam aliquam sem et tortor consequat?', 'Molestie a iaculis at erat pellentesque adipiscing commodo. Dignissim suspendisse in est ante in. Nunc vel risus commodo viverra maecenas accumsan. Sit amet nisl suscipit adipiscing bibendum est. Purus gravida quis blandit turpis cursus in', 5);
-
-INSERT INTO social_links (icon, url, sort_order) VALUES
-  ('bi-twitter-x', '#', 1),
-  ('bi-facebook', '#', 2),
-  ('bi-instagram', '#', 3),
-  ('bi-linkedin', '#', 4);
-
--- One sample message so the table is not empty (delete if you like)
-INSERT INTO contact_messages (name, email, subject, message, ip_address) VALUES
-  ('Sample Visitor', 'visitor@example.com', 'Welcome', 'This is a sample message stored by the contact form.', '127.0.0.1');
-
--- View received messages:  SELECT * FROM contact_messages ORDER BY created_at DESC;
-
--- Optional hero extras (empty => hidden, so the public design stays identical to the template)
-INSERT INTO site_settings (setting_key, setting_value) VALUES
-  ('hero_subtitle', ''),
-  ('hero_cta_text', ''),
-  ('hero_cta_url', '#contact'),
-  ('page_banner_image', 'img/hero-img.jpg');
-
--- Default navigation items (add/edit/delete in admin > Menu)
-INSERT INTO nav_menu (label, url, sort_order) VALUES
-  ('Home', 'index.php', 1),
-  ('About', 'about.php', 2),
-  ('Services', 'services.php', 3),
-  ('Portfolio', 'portfolio.php', 4),
-  ('Contact', 'contact.php', 5);
 SQLDATA;
+

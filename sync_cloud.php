@@ -16,18 +16,17 @@ try {
     }
     $sql = file_get_contents($sqlFile);
     
-    // Disable foreign key checks before dropping and recreating tables
+    // Disable foreign key checks
     $pdo->exec('SET FOREIGN_KEY_CHECKS = 0');
     
     require_once __DIR__ . '/src/Installer.php';
     
-    $tables = [
-        'portfolio_images', 'portfolio_items', 'portfolio_categories',
-        'testimonials', 'pricing_plans', 'faqs', 'services', 'resume_items',
-        'skills', 'social_links', 'site_settings'
-    ];
-    foreach ($tables as $t) {
-        $pdo->exec("DROP TABLE IF EXISTS `$t`");
+    // Drop all tables so clean recreation occurs
+    $allTables = $pdo->query('SHOW TABLES')->fetchAll(PDO::FETCH_COLUMN);
+    foreach ($allTables as $t) {
+        if ($t !== 'php_sessions') {
+            $pdo->exec("DROP TABLE IF EXISTS `$t`");
+        }
     }
     
     foreach (Installer::split($sql) as $stmt) {

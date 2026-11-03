@@ -65,7 +65,7 @@ $navLinkActive = static function (string $url) use ($currentScript): bool {
   <link href="css/swiper-bundle.min.css" rel="stylesheet">
 
   <!-- Main CSS File -->
-  <link href="css/main.css?v=3.0" rel="stylesheet">
+  <link href="css/main.css?v=3.1" rel="stylesheet">
 
   <!-- =======================================================
   * Template Name: DevFolio
@@ -84,11 +84,9 @@ $navLinkActive = static function (string $url) use ($currentScript): bool {
       <a href="index.php" class="logo d-flex align-items-center">
         <?php if (!empty($siteLogo) && is_file(ROOT_PATH . '/' . $siteLogo)): ?>
           <img src="<?= e($siteLogo) ?>" alt="<?= e($siteName) ?>" class="site-header-logo">
+        <?php else: ?>
+          <h1 class="sitename"><?= e($siteName) ?></h1>
         <?php endif; ?>
-        <div class="logo-text-group d-flex flex-column ms-2">
-          <span class="company-main-title"><?= e($siteName) ?></span>
-          <span class="company-tagline">TAX AND VAT EXPERTISE</span>
-        </div>
       </a>
 
       <nav id="navmenu" class="navmenu">

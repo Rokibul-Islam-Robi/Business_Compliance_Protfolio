@@ -1867,18 +1867,20 @@ section,
 
 /* 1. Header & Logo Responsive Styling */
 .header .logo img {
-  max-height: 52px;
+  max-height: 56px;
   width: auto;
   object-fit: contain;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
   transition: all 0.3s ease;
 }
 
 @media (max-width: 768px) {
   .header {
-    padding: 12px 0;
+    padding: 10px 0;
   }
   .header .logo img {
-    max-height: 42px;
+    max-height: 46px;
   }
   .header .sitename {
     font-size: 22px;

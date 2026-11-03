@@ -1855,3 +1855,251 @@ section,
     margin: 0 auto;
   }
 }
+
+/* ==============================================================
+   Comprehensive Mobile & Tablet Responsive Optimizations
+============================================================== */
+
+/* 1. Header & Logo Responsive Styling */
+.header .logo img {
+  max-height: 52px;
+  width: auto;
+  object-fit: contain;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 12px 0;
+  }
+  .header .logo img {
+    max-height: 42px;
+  }
+  .header .sitename {
+    font-size: 22px;
+  }
+}
+
+/* 2. Hero Section Mobile Optimization */
+@media (max-width: 768px) {
+  .hero {
+    min-height: 85vh;
+    padding: 90px 15px 50px;
+  }
+  .hero .hero-bg-img,
+  .hero img {
+    object-position: center top !important;
+  }
+  .hero h2 {
+    font-size: 28px !important;
+    line-height: 1.25;
+    margin-bottom: 12px;
+    word-break: break-word;
+  }
+  .hero p {
+    font-size: 18px !important;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero h2 {
+    font-size: 24px !important;
+  }
+  .hero p {
+    font-size: 16px !important;
+  }
+}
+
+/* 3. About Section Profile Image Centering on Mobile */
+.about-profile-img,
+.about .img-fluid {
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.12);
+  object-fit: cover;
+}
+
+@media (max-width: 991px) {
+  .about-profile-wrap {
+    text-align: center;
+  }
+  .about-profile-img,
+  .about img.img-fluid {
+    display: block !important;
+    margin: 0 auto 20px auto !important;
+    max-width: 260px !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+  .about-info {
+    text-align: left;
+    display: inline-block;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 0 10px;
+  }
+  .about-me {
+    margin-top: 25px;
+  }
+}
+
+/* 4. Stats Section Mobile 2-Column Grid & Compact Padding */
+@media (max-width: 768px) {
+  .stats {
+    padding: 60px 0 !important;
+  }
+  .stats .stats-item {
+    padding: 18px 10px !important;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    backdrop-filter: blur(4px);
+  }
+  .stats .stats-item span {
+    font-size: 34px !important;
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+  .stats .stats-item p {
+    font-size: 14px !important;
+    line-height: 1.3;
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats .stats-item span {
+    font-size: 28px !important;
+  }
+  .stats .stats-item p {
+    font-size: 12px !important;
+  }
+}
+
+/* 5. Services Cards Mobile Optimization */
+@media (max-width: 768px) {
+  .services .service-item {
+    padding: 30px 20px !important;
+    border-radius: 12px;
+  }
+  .services .service-item .icon {
+    margin-bottom: 15px !important;
+  }
+  .services .service-item h3 {
+    font-size: 20px !important;
+    margin-bottom: 10px !important;
+  }
+  .services .service-item p {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+  }
+}
+
+/* 6. Pricing Items Mobile Optimization */
+@media (max-width: 768px) {
+  .pricing-item {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 8px;
+    padding: 16px 18px;
+    background: #fbfcfe;
+    border: 1px solid #eef2f7;
+    border-radius: 10px;
+  }
+  .pricing-item h3 {
+    font-size: 16px !important;
+    margin: 0;
+    line-height: 1.4;
+  }
+  .pricing-item h4 {
+    font-size: 20px !important;
+    color: var(--accent-color) !important;
+    margin: 0;
+    font-weight: 700;
+  }
+}
+
+/* 7. FAQ Mobile Optimization */
+@media (max-width: 768px) {
+  .faq .faq-container .faq-item {
+    padding: 16px 14px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+  }
+  .faq .faq-container .faq-item h3 {
+    font-size: 16px;
+    line-height: 1.4;
+    padding-right: 25px;
+  }
+  .faq .faq-container .faq-item .faq-content p {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-top: 10px;
+  }
+}
+
+/* 8. Contact Section & Form Mobile Optimization */
+@media (max-width: 768px) {
+  .contact .info-wrap {
+    padding: 20px 15px !important;
+    border-radius: 12px;
+  }
+  .contact .info-item {
+    margin-bottom: 15px;
+  }
+  .contact .info-item i {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+  }
+  .contact .info-item h3 {
+    font-size: 17px;
+  }
+  .contact .info-item p {
+    font-size: 14px;
+    word-break: break-word;
+  }
+  .contact .php-email-form {
+    padding: 20px 15px !important;
+  }
+  .contact .php-email-form input,
+  .contact .php-email-form textarea {
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+  .contact .php-email-form button[type="submit"] {
+    width: 100%;
+    padding: 12px 24px;
+  }
+}
+
+/* 9. General Global Mobile Typography & Section Padding */
+@media (max-width: 768px) {
+  .section {
+    padding: 55px 0 !important;
+  }
+  .section-title {
+    padding-bottom: 30px !important;
+    text-align: center;
+  }
+  .section-title h2 {
+    font-size: 28px !important;
+    letter-spacing: 0.5px;
+  }
+  .section-title p {
+    font-size: 14px !important;
+    line-height: 1.5;
+    padding: 0 10px;
+  }
+  .about-me h4 {
+    font-size: 22px;
+    margin-bottom: 14px;
+  }
+  .about-me p {
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 14px;
+  }
+}
+

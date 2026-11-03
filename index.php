@@ -35,9 +35,9 @@ require __DIR__ . '/includes/header.php';
     <!-- Hero Section -->
     <section id="hero" class="hero section dark-background">
 
-      <img src="<?= e(setting('hero_image', 'img/hero-img.jpg')) ?>" alt="" data-aos="fade-in">
+      <img src="<?= e(setting('hero_image', 'img/hero-img.jpg')) ?>" class="hero-bg-img" alt="" data-aos="fade-in">
 
-      <div class="container d-flex flex-column align-items-center justify-content-center text-center" data-aos="fade-up" data-aos-delay="100">
+      <div class="container d-flex flex-column align-items-center justify-content-center text-center hero-content" data-aos="fade-up" data-aos-delay="100">
         <h2><?= e(setting('hero_title')) ?></h2>
         <p><span class="typed" data-typed-items="<?= e(setting('hero_typed_items')) ?>"></span></p>
         <?php if (setting('hero_subtitle') !== ''): /* optional - managed in admin > Hero */ ?>
@@ -58,9 +58,9 @@ require __DIR__ . '/includes/header.php';
         <div class="row gy-4">
           <div class="col-md-6">
 
-            <div class="row justify-content-between gy-4">
-              <div class="col-lg-5">
-                <img src="<?= e(setting('about_image', 'img/profile-img.jpg')) ?>" class="img-fluid" alt="">
+            <div class="row justify-content-between align-items-center gy-4 about-profile-wrap">
+              <div class="col-lg-5 text-center text-lg-start">
+                <img src="<?= e(setting('about_image', 'img/profile-img.jpg')) ?>" class="img-fluid about-profile-img" alt="">
               </div>
               <div class="col-lg-7 about-info">
                 <p><strong>Name: </strong> <span><?= e(setting('about_name')) ?></span></p>
@@ -201,7 +201,7 @@ require __DIR__ . '/includes/header.php';
         <div class="row gy-4">
 
           <?php foreach ($stats as $st): $n = (int) $st['value']; ?>
-          <div class="col-lg-3 col-md-6">
+          <div class="col-6 col-md-6 col-lg-3">
             <div class="stats-item text-center w-100 h-100">
               <span data-purecounter-start="0" data-purecounter-end="<?= $n ?>" data-purecounter-duration="0" class="purecounter"><?= $n ?></span>
               <p><?= e($st['label']) ?></p>
